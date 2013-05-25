@@ -16,6 +16,7 @@ using MiniXNAft.Entities;
 using Microsoft.Xna.Framework.Input;
 using MiniXNAft.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
+using MiniXNAft.Entities;
 
 namespace MiniXNAft {
     public partial class GamePage : PhoneApplicationPage {
@@ -26,6 +27,7 @@ namespace MiniXNAft {
         Player player;
         private SharedGraphicsDeviceManager graphics;
         private Drawer drawer;
+        Slime slime;
 
         public const int ScaleFactor = 3;
 
@@ -51,6 +53,7 @@ namespace MiniXNAft {
             graphics.PreferredBackBufferWidth = 480;
             graphics.PreferredBackBufferHeight = 800;
 
+
         }
 
         private void LoadContent() {
@@ -63,7 +66,12 @@ namespace MiniXNAft {
 
 
             player = new Player(drawer);
-            
+
+            //
+            slime = new Slime(3);
+            slime.level = new Levels.Level(drawer.Width >> 4, drawer.Height >> 4);
+            slime.level.player = player;
+            slime.findStartPos(slime.level);
             // Start the timer
             timer.Start();
 
@@ -97,6 +105,7 @@ namespace MiniXNAft {
 
             player.Interact(gamePadState, touches);
             player.Update(new GameTime(e.TotalTime, e.ElapsedTime));
+            slime.Update();
         }
 
         /// <summary>
@@ -107,8 +116,8 @@ namespace MiniXNAft {
 
             spriteBatch.Begin();
 
-            player.Draw(graphics, spriteBatch);
-
+            player.Draw(drawer, spriteBatch);
+            slime.Draw(drawer, spriteBatch);
             spriteBatch.End();
 
         }

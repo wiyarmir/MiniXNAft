@@ -11,14 +11,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MiniXNAft.Entities {
-    public class Player : IInteractive, IMotionInteractive, IUpdateable {
+    public class Player : Mob, IInteractive, IMotionInteractive, IUpdateable {
 
-        private Drawer drawer;
 
         // Vector2 position { get; set; }
-        float X { get; set; }
-        float Y { get; set; }
-        float Velocity { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Velocity { get; set; }
 
         // Dimensions
         public int Width { get; set; }
@@ -40,6 +39,7 @@ namespace MiniXNAft.Entities {
         int CurrentFrame = 0;
         int TotalFrames = 2;
         double FrameDelay = .1D;
+        public int score;
 
         enum Movement { None = 0, Down, Up, Right, Left };
 
@@ -51,7 +51,6 @@ namespace MiniXNAft.Entities {
 
         public Player(Drawer drawer)
             : this() {
-            this.drawer = drawer;
             this.Height = drawer.Width; this.Width = drawer.Height;
             X = Width / 2;
             Y = Height / 2;
@@ -161,7 +160,7 @@ namespace MiniXNAft.Entities {
             }
         }
 
-        public void Draw(SharedGraphicsDeviceManager graphics, SpriteBatch spriteBatch) {
+        new public void Draw(Drawer drawer, SpriteBatch spriteBatch) {
             int spriteOffset = 0;
             switch (orientation) {
                 case Movement.Left:

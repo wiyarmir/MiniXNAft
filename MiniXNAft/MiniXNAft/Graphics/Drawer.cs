@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 namespace MiniXNAft.Graphics {
     public class Drawer {
         private Microsoft.Xna.Framework.SharedGraphicsDeviceManager graphics;
-        private Microsoft.Xna.Framework.Graphics.Texture2D spriteSheet;
+        public Microsoft.Xna.Framework.Graphics.Texture2D spriteSheet;
         public int Height, Width;
 
         public Drawer(SharedGraphicsDeviceManager graphics, Texture2D spriteSheet) {
