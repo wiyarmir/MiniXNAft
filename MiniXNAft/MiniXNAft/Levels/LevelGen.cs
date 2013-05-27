@@ -81,8 +81,22 @@ namespace MiniXNAft.Levels {
         public static byte[][] createAndValidateTopMap(int w, int h) {
             int attempt = 0;
             do {
-                byte[][] result = createTopMap(w, h);
+                // byte[][] result = createTopMap(w, h);
 
+
+                byte[] map = new byte[w * h];
+                byte[] data = new byte[w * h];
+                for (int y = 0; y < h; y++) {
+                    for (int x = 0; x < w; x++) {
+                        int i = x + y * w;
+                        map[i] = Tile.grass.id;
+                        data[i] = 0;
+                    }
+                }
+
+                byte[][] result = { map, data };
+
+                /*
                 int[] count = new int[256];
 
                 for (int i = 0; i < w * h; i++) {
@@ -96,9 +110,7 @@ namespace MiniXNAft.Levels {
                     continue;
                 if (count[Tile.tree.id & 0xff] < 100)
                     continue;
-                if (count[Tile.stairsDown.id & 0xff] < 2)
-                    continue;
-
+                */
                 return result;
 
             } while (true);
@@ -133,232 +145,226 @@ namespace MiniXNAft.Levels {
 
 
         private static byte[][] createTopMap(int w, int h) {
-		LevelGen mnoise1 = new LevelGen(w, h, 16);
-		LevelGen mnoise2 = new LevelGen(w, h, 16);
-		LevelGen mnoise3 = new LevelGen(w, h, 16);
+            LevelGen mnoise1 = new LevelGen(w, h, 16);
+            LevelGen mnoise2 = new LevelGen(w, h, 16);
+            LevelGen mnoise3 = new LevelGen(w, h, 16);
 
-		LevelGen noise1 = new LevelGen(w, h, 32);
-		LevelGen noise2 = new LevelGen(w, h, 32);
+            LevelGen noise1 = new LevelGen(w, h, 32);
+            LevelGen noise2 = new LevelGen(w, h, 32);
 
-		byte[] map = new byte[w * h];
-		byte[] data = new byte[w * h];
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				int i = x + y * w;
+            byte[] map = new byte[w * h];
+            byte[] data = new byte[w * h];
+            for (int y = 0; y < h; y++) {
+                for (int x = 0; x < w; x++) {
+                    int i = x + y * w;
 
-				double val = Math.Abs(noise1.values[i] - noise2.values[i]) * 3 - 2;
-				double mval = Math.Abs(mnoise1.values[i] - mnoise2.values[i]);
-				mval = Math.Abs(mval - mnoise3.values[i]) * 3 - 2;
+                    double val = Math.Abs(noise1.values[i] - noise2.values[i]) * 3 - 2;
+                    double mval = Math.Abs(mnoise1.values[i] - mnoise2.values[i]);
+                    mval = Math.Abs(mval - mnoise3.values[i]) * 3 - 2;
 
-				double xd = x / (w - 1.0) * 2 - 1;
-				double yd = y / (h - 1.0) * 2 - 1;
-				if (xd < 0)
-					xd = -xd;
-				if (yd < 0)
-					yd = -yd;
-				double dist = xd >= yd ? xd : yd;
-				dist = dist * dist * dist * dist;
-				dist = dist * dist * dist * dist;
-				val = val + 1 - dist * 20;
+                    double xd = x / (w - 1.0) * 2 - 1;
+                    double yd = y / (h - 1.0) * 2 - 1;
+                    if (xd < 0)
+                        xd = -xd;
+                    if (yd < 0)
+                        yd = -yd;
+                    double dist = xd >= yd ? xd : yd;
+                    dist = dist * dist * dist * dist;
+                    dist = dist * dist * dist * dist;
+                    val = val + 1 - dist * 20;
 
-				if (val < -0.5) {
-					map[i] = Tile.water.id;
-				} else if (val > 0.5 && mval < -1.5) {
-					map[i] = Tile.rock.id;
-				} else {
-					map[i] = Tile.grass.id;
-				}
-			}
-		}
+                    if (val < -0.5) {
+                        map[i] = Tile.water.id;
+                    } else if (val > 0.5 && mval < -1.5) {
+                        map[i] = Tile.rock.id;
+                    } else {
+                        map[i] = Tile.grass.id;
+                    }
+                }
+            }
+            /*
+            for (int i = 0; i < w * h / 2800; i++) {
+                int xs = random.Next(w);
+                int ys = random.Next(h);
+                for (int k = 0; k < 10; k++) {
+                    int x = xs + random.Next(21) - 10;
+                    int y = ys + random.Next(21) - 10;
+                    for (int j = 0; j < 100; j++) {
+                        int xo = x + random.Next(5) - random.Next(5);
+                        int yo = y + random.Next(5) - random.Next(5);
+                        for (int yy = yo - 1; yy <= yo + 1; yy++)
+                            for (int xx = xo - 1; xx <= xo + 1; xx++)
+                                if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                                    if (map[xx + yy * w] == Tile.grass.id) {
+                                        map[xx + yy * w] = Tile.sand.id;
+                                    }
+                                }
+                    }
+                }
+            }
+            */
 
-		for (int i = 0; i < w * h / 2800; i++) {
-			int xs = random.Next(w);
-			int ys = random.Next(h);
-			for (int k = 0; k < 10; k++) {
-				int x = xs + random.Next(21) - 10;
-				int y = ys + random.Next(21) - 10;
-				for (int j = 0; j < 100; j++) {
-					int xo = x + random.Next(5) - random.Next(5);
-					int yo = y + random.Next(5) - random.Next(5);
-					for (int yy = yo - 1; yy <= yo + 1; yy++)
-						for (int xx = xo - 1; xx <= xo + 1; xx++)
-							if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-								if (map[xx + yy * w] == Tile.grass.id) {
-									map[xx + yy * w] = Tile.sand.id;
-								}
-							}
-				}
-			}
-		}
+            /*
+             * for (int i = 0; i < w * h / 2800; i++) { int xs = random.Next(w);
+             * int ys = random.Next(h); for (int k = 0; k < 10; k++) { int x = xs
+             * + random.Next(21) - 10; int y = ys + random.Next(21) - 10; for
+             * (int j = 0; j < 100; j++) { int xo = x + random.Next(5) -
+             * random.Next(5); int yo = y + random.Next(5) -
+             * random.Next(5); for (int yy = yo - 1; yy <= yo + 1; yy++) for (int
+             * xx = xo - 1; xx <= xo + 1; xx++) if (xx >= 0 && yy >= 0 && xx < w &&
+             * yy < h) { if (map[xx + yy * w] == Tile.grass.id) { map[xx + yy * w] =
+             * Tile.dirt.id; } } } } }
+             */
 
-		/*
-		 * for (int i = 0; i < w * h / 2800; i++) { int xs = random.Next(w);
-		 * int ys = random.Next(h); for (int k = 0; k < 10; k++) { int x = xs
-		 * + random.Next(21) - 10; int y = ys + random.Next(21) - 10; for
-		 * (int j = 0; j < 100; j++) { int xo = x + random.Next(5) -
-		 * random.Next(5); int yo = y + random.Next(5) -
-		 * random.Next(5); for (int yy = yo - 1; yy <= yo + 1; yy++) for (int
-		 * xx = xo - 1; xx <= xo + 1; xx++) if (xx >= 0 && yy >= 0 && xx < w &&
-		 * yy < h) { if (map[xx + yy * w] == Tile.grass.id) { map[xx + yy * w] =
-		 * Tile.dirt.id; } } } } }
-		 */
+            //Trees
+            /*
+            for (int i = 0; i < w * h / 400; i++) {
+                int x = random.Next(w);
+                int y = random.Next(h);
+                for (int j = 0; j < 200; j++) {
+                    int xx = x + random.Next(15) - random.Next(15);
+                    int yy = y + random.Next(15) - random.Next(15);
+                    if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                        if (map[xx + yy * w] == Tile.grass.id) {
+                            map[xx + yy * w] = Tile.tree.id;
+                        }
+                    }
+                }
+            }
+            */
 
-		for (int i = 0; i < w * h / 400; i++) {
-			int x = random.Next(w);
-			int y = random.Next(h);
-			for (int j = 0; j < 200; j++) {
-				int xx = x + random.Next(15) - random.Next(15);
-				int yy = y + random.Next(15) - random.Next(15);
-				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tile.grass.id) {
-						map[xx + yy * w] = Tile.tree.id;
-					}
-				}
-			}
-		}
+            //Flowers
+            /*
+            for (int i = 0; i < w * h / 400; i++) {
+                int x = random.Next(w);
+                int y = random.Next(h);
+                int col = random.Next(4);
+                for (int j = 0; j < 30; j++) {
+                    int xx = x + random.Next(5) - random.Next(5);
+                    int yy = y + random.Next(5) - random.Next(5);
+                    if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                        if (map[xx + yy * w] == Tile.grass.id) {
+                            map[xx + yy * w] = Tile.flower.id;
+                            data[xx + yy * w] = (byte)(col + random.Next(4) * 16);
+                        }
+                    }
+                }
+            }
+            */
 
-		for (int i = 0; i < w * h / 400; i++) {
-			int x = random.Next(w);
-			int y = random.Next(h);
-			int col = random.Next(4);
-			for (int j = 0; j < 30; j++) {
-				int xx = x + random.Next(5) - random.Next(5);
-				int yy = y + random.Next(5) - random.Next(5);
-				if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-					if (map[xx + yy * w] == Tile.grass.id) {
-						map[xx + yy * w] = Tile.flower.id;
-						data[xx + yy * w] = (byte) (col + random.Next(4) * 16);
-					}
-				}
-			}
-		}
+            //Cactus
+            /*
+            for (int i = 0; i < w * h / 100; i++) {
+                int xx = random.Next(w);
+                int yy = random.Next(h);
+                if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
+                    if (map[xx + yy * w] == Tile.sand.id) {
+                        map[xx + yy * w] = Tile.cactus.id;
+                    }
+                }
+            }
+            */
 
-		for (int i = 0; i < w * h / 100; i++) {
-			int xx = random.Next(w);
-			int yy = random.Next(h);
-			if (xx >= 0 && yy >= 0 && xx < w && yy < h) {
-				if (map[xx + yy * w] == Tile.sand.id) {
-					map[xx + yy * w] = Tile.cactus.id;
-				}
-			}
-		}
-
-		int count = 0;
-		stairsLoop: for (int i = 0; i < w * h / 100; i++) {
-			int x = random.Next(w - 2) + 1;
-			int y = random.Next(h - 2) + 1;
-
-			for (int yy = y - 1; yy <= y + 1; yy++)
-				for (int xx = x - 1; xx <= x + 1; xx++) {
-					if (map[xx + yy * w] != Tile.rock.id)
-						goto stairsLoop;
-				}
-
-			map[x + y * w] = Tile.stairsDown.id;
-			count++;
-			if (count == 4)
-				break;
-		}
-
-		return new byte[][] { map, data };
-	}
+            return new byte[][] { map, data };
+        }
 
         private static byte[][] createUndergroundMap(int w, int h, int depth) {
-		LevelGen mnoise1 = new LevelGen(w, h, 16);
-		LevelGen mnoise2 = new LevelGen(w, h, 16);
-		LevelGen mnoise3 = new LevelGen(w, h, 16);
+            LevelGen mnoise1 = new LevelGen(w, h, 16);
+            LevelGen mnoise2 = new LevelGen(w, h, 16);
+            LevelGen mnoise3 = new LevelGen(w, h, 16);
 
-		LevelGen nnoise1 = new LevelGen(w, h, 16);
-		LevelGen nnoise2 = new LevelGen(w, h, 16);
-		LevelGen nnoise3 = new LevelGen(w, h, 16);
+            LevelGen nnoise1 = new LevelGen(w, h, 16);
+            LevelGen nnoise2 = new LevelGen(w, h, 16);
+            LevelGen nnoise3 = new LevelGen(w, h, 16);
 
-		LevelGen wnoise1 = new LevelGen(w, h, 16);
-		LevelGen wnoise2 = new LevelGen(w, h, 16);
-		LevelGen wnoise3 = new LevelGen(w, h, 16);
+            LevelGen wnoise1 = new LevelGen(w, h, 16);
+            LevelGen wnoise2 = new LevelGen(w, h, 16);
+            LevelGen wnoise3 = new LevelGen(w, h, 16);
 
-		LevelGen noise1 = new LevelGen(w, h, 32);
-		LevelGen noise2 = new LevelGen(w, h, 32);
+            LevelGen noise1 = new LevelGen(w, h, 32);
+            LevelGen noise2 = new LevelGen(w, h, 32);
 
-		byte[] map = new byte[w * h];
-		byte[] data = new byte[w * h];
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				int i = x + y * w;
+            byte[] map = new byte[w * h];
+            byte[] data = new byte[w * h];
+            for (int y = 0; y < h; y++) {
+                for (int x = 0; x < w; x++) {
+                    int i = x + y * w;
 
-				double val = Math.Abs(noise1.values[i] - noise2.values[i]) * 3 - 2;
+                    double val = Math.Abs(noise1.values[i] - noise2.values[i]) * 3 - 2;
 
-				double mval = Math.Abs(mnoise1.values[i] - mnoise2.values[i]);
-				mval = Math.Abs(mval - mnoise3.values[i]) * 3 - 2;
+                    double mval = Math.Abs(mnoise1.values[i] - mnoise2.values[i]);
+                    mval = Math.Abs(mval - mnoise3.values[i]) * 3 - 2;
 
-				double nval = Math.Abs(nnoise1.values[i] - nnoise2.values[i]);
-				nval = Math.Abs(nval - nnoise3.values[i]) * 3 - 2;
+                    double nval = Math.Abs(nnoise1.values[i] - nnoise2.values[i]);
+                    nval = Math.Abs(nval - nnoise3.values[i]) * 3 - 2;
 
-				double wval = Math.Abs(wnoise1.values[i] - wnoise2.values[i]);
-				wval = Math.Abs(nval - wnoise3.values[i]) * 3 - 2;
+                    double wval = Math.Abs(wnoise1.values[i] - wnoise2.values[i]);
+                    wval = Math.Abs(nval - wnoise3.values[i]) * 3 - 2;
 
-				double xd = x / (w - 1.0) * 2 - 1;
-				double yd = y / (h - 1.0) * 2 - 1;
-				if (xd < 0)
-					xd = -xd;
-				if (yd < 0)
-					yd = -yd;
-				double dist = xd >= yd ? xd : yd;
-				dist = dist * dist * dist * dist;
-				dist = dist * dist * dist * dist;
-				val = val + 1 - dist * 20;
+                    double xd = x / (w - 1.0) * 2 - 1;
+                    double yd = y / (h - 1.0) * 2 - 1;
+                    if (xd < 0)
+                        xd = -xd;
+                    if (yd < 0)
+                        yd = -yd;
+                    double dist = xd >= yd ? xd : yd;
+                    dist = dist * dist * dist * dist;
+                    dist = dist * dist * dist * dist;
+                    val = val + 1 - dist * 20;
 
-				if (val > -2 && wval < -2.0 + (depth) / 2 * 3) {
-					if (depth > 2)
-						map[i] = Tile.lava.id;
-					else
-						map[i] = Tile.water.id;
-				} else if (val > -2 && (mval < -1.7 || nval < -1.4)) {
-					map[i] = Tile.dirt.id;
-				} else {
-					map[i] = Tile.rock.id;
-				}
-			}
-		}
+                    if (val > -2 && wval < -2.0 + (depth) / 2 * 3) {
+                        if (depth > 2)
+                            map[i] = Tile.lava.id;
+                        else
+                            map[i] = Tile.water.id;
+                    } else if (val > -2 && (mval < -1.7 || nval < -1.4)) {
+                        map[i] = Tile.dirt.id;
+                    } else {
+                        map[i] = Tile.rock.id;
+                    }
+                }
+            }
 
-		{
-			int r = 2;
-			for (int i = 0; i < w * h / 400; i++) {
-				int x = random.Next(w);
-				int y = random.Next(h);
-				for (int j = 0; j < 30; j++) {
-					int xx = x + random.Next(5) - random.Next(5);
-					int yy = y + random.Next(5) - random.Next(5);
-					if (xx >= r && yy >= r && xx < w - r && yy < h - r) {
-						if (map[xx + yy * w] == Tile.rock.id) {
-							map[xx + yy * w] = (byte) ((Tile.ironOre.id & 0xff)
-									+ depth - 1);
-						}
-					}
-				}
-			}
-		}
+            {
+                int r = 2;
+                for (int i = 0; i < w * h / 400; i++) {
+                    int x = random.Next(w);
+                    int y = random.Next(h);
+                    for (int j = 0; j < 30; j++) {
+                        int xx = x + random.Next(5) - random.Next(5);
+                        int yy = y + random.Next(5) - random.Next(5);
+                        if (xx >= r && yy >= r && xx < w - r && yy < h - r) {
+                            if (map[xx + yy * w] == Tile.rock.id) {
+                                map[xx + yy * w] = (byte)((Tile.ironOre.id & 0xff)
+                                        + depth - 1);
+                            }
+                        }
+                    }
+                }
+            }
 
-		if (depth < 3) {
-			int count = 0;
-			stairsLoop: for (int i = 0; i < w * h / 100; i++) {
-				int x = random.Next(w - 20) + 10;
-				int y = random.Next(h - 20) + 10;
+            if (depth < 3) {
+                int count = 0;
+            stairsLoop: for (int i = 0; i < w * h / 100; i++) {
+                    int x = random.Next(w - 20) + 10;
+                    int y = random.Next(h - 20) + 10;
 
-				for (int yy = y - 1; yy <= y + 1; yy++)
-					for (int xx = x - 1; xx <= x + 1; xx++) {
-						if (map[xx + yy * w] != Tile.rock.id)
-							goto stairsLoop;
-					}
+                    for (int yy = y - 1; yy <= y + 1; yy++)
+                        for (int xx = x - 1; xx <= x + 1; xx++) {
+                            if (map[xx + yy * w] != Tile.rock.id) {
+                                //goto stairsLoop;
+                            }
+                        }
 
-				map[x + y * w] = Tile.stairsDown.id;
-				count++;
-				if (count == 4)
-					break;
-			}
-		}
+                    map[x + y * w] = Tile.stairsDown.id;
+                    count++;
+                    if (count == 4)
+                        break;
+                }
+            }
 
-		return new byte[][] { map, data };
-	}
+            return new byte[][] { map, data };
+        }
 
         /*
             public static void main(String[] args) {

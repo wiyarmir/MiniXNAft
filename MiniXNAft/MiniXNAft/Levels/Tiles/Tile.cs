@@ -13,6 +13,7 @@ using MiniXNAft.Levels.Tiles;
 using MiniXNAft.Items;
 using MiniXNAft.Graphics;
 using MiniXNAft.Items.Resources;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MiniXNAft.Levels.Tiles {
     public class Tile {
@@ -62,7 +63,7 @@ namespace MiniXNAft.Levels.Tiles {
             tiles[id] = this;
         }
 
-        public void Draw(Drawer drawer, Level level, int x, int y) {
+        public void Draw(Drawer drawer, SpriteBatch spriteBatch, Level level, int x, int y) {
         }
 
         public bool mayPass(Level level, int x, int y, Entity e) {

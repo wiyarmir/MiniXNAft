@@ -75,7 +75,7 @@ namespace MiniXNAft.Entities {
 
         new public void Draw(Drawer drawer, SpriteBatch spriteBatch) {
             int xt = 0;
-            int yt = 18;
+            int yt = 20;
 
             int xo = x - 8;
             int yo = y - 11;
@@ -85,7 +85,7 @@ namespace MiniXNAft.Entities {
                 yo -= 4;
             }
 
-            Color col = new Color(555 / 555, 522 / 555, 100 / 555, 1);
+            Color col = new Color(555F / 555F, 522F / 555F, 100F / 555F, 1F);
             /*if (lvl == 2)
                 col = Color.get(-1, 100, 522, 555);
             if (lvl == 3)

@@ -13,6 +13,7 @@ using MiniXNAft.Entities;
 using MiniXNAft.Levels.Tiles;
 using MiniXNAft.Levels;
 using MiniXNAft.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MiniXNAft.Levels {
     public class Level {
@@ -39,8 +40,8 @@ namespace MiniXNAft.Levels {
             monsterDensity = 4;
 
 
-            // tiles = maps[0];
-            // data = maps[1];
+            tiles = maps[0];
+            data = maps[1];
 
             entitiesInTiles = new List<List<Entity>>(w * h);
             for (int i = 0; i < w * h; i++) {
@@ -49,12 +50,12 @@ namespace MiniXNAft.Levels {
         }
 
 
-        public void renderBackground(Drawer drawer, int width, int height) {
+        public void renderBackground(Drawer drawer, SpriteBatch spriteBatch, int width, int height) {
             int w = (width + 15) >> 4;
             int h = (height + 15) >> 4;
             for (int y = 0; y <= h; y++) {
                 for (int x = 0; x <= w; x++) {
-                    getTile(x, y).Draw(drawer, this, x, y);
+                    getTile(x, y).Draw(drawer, spriteBatch, this, x, y);
                 }
             }
 

@@ -16,7 +16,7 @@ using MiniXNAft.Entities;
 using Microsoft.Xna.Framework.Input;
 using MiniXNAft.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
-using MiniXNAft.Entities;
+using MiniXNAft.Levels;
 
 namespace MiniXNAft {
     public partial class GamePage : PhoneApplicationPage {
@@ -28,8 +28,9 @@ namespace MiniXNAft {
         private SharedGraphicsDeviceManager graphics;
         private Drawer drawer;
         Slime slime;
+        Level level;
 
-        public const int ScaleFactor = 3;
+        public const int ScaleFactor = 4;
 
         public GamePage() {
             InitializeComponent();
@@ -68,10 +69,15 @@ namespace MiniXNAft {
             player = new Player(drawer);
 
             //
+            level = new Levels.Level(128, 128);
+            level.player = player;
+
             slime = new Slime(3);
-            slime.level = new Levels.Level(drawer.Width >> 4, drawer.Height >> 4);
-            slime.level.player = player;
+            slime.level = level;
             slime.findStartPos(slime.level);
+
+            slime.x = (int)player.X - 10;
+            slime.y = (int)player.Y - 10;
             // Start the timer
             timer.Start();
 
@@ -112,10 +118,23 @@ namespace MiniXNAft {
         /// Allows the page to draw itself.
         /// </summary>
         private void OnDraw(object sender, GameTimerEventArgs e) {
+
+            int xScroll = player.x - drawer.Width / 2;
+            int yScroll = player.y - (drawer.Height - 8) / 2;
+            if (xScroll < 16)
+                xScroll = 16;
+            if (yScroll < 16)
+                yScroll = 16;
+            if (xScroll > level.w * 16 - drawer.Width - 16)
+                xScroll = level.w * 16 - drawer.Width - 16;
+            if (yScroll > level.h * 16 - drawer.Height - 16)
+                yScroll = level.h * 16 - drawer.Height - 16;
+
             graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
 
+            level.renderBackground(drawer, spriteBatch, xScroll, yScroll);
             player.Draw(drawer, spriteBatch);
             slime.Draw(drawer, spriteBatch);
             spriteBatch.End();

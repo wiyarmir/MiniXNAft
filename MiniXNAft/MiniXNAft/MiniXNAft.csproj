@@ -94,7 +94,7 @@
     <Compile Include="IUpdateable.cs" />
     <Compile Include="Levels\Level.cs" />
     <Compile Include="Levels\LevelGen.cs" />
-    <Compile Include="Levels\Slime.cs" />
+    <Compile Include="Entities\Slime.cs" />
     <Compile Include="Levels\Tiles\CactusTile.cs" />
     <Compile Include="Levels\Tiles\CloudCactusTile.cs" />
     <Compile Include="Levels\Tiles\CloudTile.cs" />
@@ -116,7 +116,7 @@
     <Compile Include="Levels\Tiles\TreeTile.cs" />
     <Compile Include="Levels\Tiles\WaterTile.cs" />
     <Compile Include="Levels\Tiles\WheatTile.cs" />
-    <Compile Include="Levels\Zombie.cs" />
+    <Compile Include="Entities\Zombie.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

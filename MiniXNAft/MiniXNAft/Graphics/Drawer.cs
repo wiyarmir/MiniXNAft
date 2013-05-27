@@ -17,8 +17,8 @@ namespace MiniXNAft.Graphics {
         public Drawer(SharedGraphicsDeviceManager graphics, Texture2D spriteSheet) {
             this.graphics = graphics;
             this.spriteSheet = spriteSheet;
-            Height = graphics.PreferredBackBufferHeight;
-            Width = graphics.PreferredBackBufferWidth;
+            Height = graphics.PreferredBackBufferHeight / GamePage.ScaleFactor;
+            Width = graphics.PreferredBackBufferWidth / GamePage.ScaleFactor;
         }
 
         public void Draw(int x, int y, int spritex, int spritey, SpriteBatch spriteBatch, Color color) {

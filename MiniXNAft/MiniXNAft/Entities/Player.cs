@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Devices.Sensors;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MiniXNAft.Items;
 
 namespace MiniXNAft.Entities {
     public class Player : Mob, IInteractive, IMotionInteractive, IUpdateable {
@@ -26,6 +27,17 @@ namespace MiniXNAft.Entities {
         private Movement orientation;
         private bool moving = false;
 
+        //
+        public Item attackItem;
+        public Item activeItem;
+        public int stamina;
+        public int staminaRecharge;
+        public int staminaRechargeDelay;
+        public int score;
+        public int maxStamina = 10;
+        private int onStairDelay;
+        public int invulnerableTime = 0;
+
         // touch zones 
         private const int TouchZoneWidth = 80;
         private Rectangle leftTouchZone;
@@ -39,19 +51,19 @@ namespace MiniXNAft.Entities {
         int CurrentFrame = 0;
         int TotalFrames = 2;
         double FrameDelay = .1D;
-        public int score;
 
         enum Movement { None = 0, Down, Up, Right, Left };
 
         private Player() {
             Velocity = 50.0F;
             X = Y = 0;
+            stamina = maxStamina;
         }
 
 
         public Player(Drawer drawer)
             : this() {
-            this.Height = drawer.Width; this.Width = drawer.Height;
+            this.Height = drawer.Width * GamePage.ScaleFactor; this.Width = drawer.Height * GamePage.ScaleFactor;
             X = Width / 2;
             Y = Height / 2;
 
@@ -175,6 +187,13 @@ namespace MiniXNAft.Entities {
                 case Movement.Down: break;
             }
             drawer.Draw((int)X, (int)Y, 0 + spriteOffset, 14 + CurrentFrame * 2, 16, 16, spriteBatch, Color.Pink);
+        }
+
+        public bool payStamina(int cost) {
+            if (cost > stamina)
+                return false;
+            stamina -= cost;
+            return true;
         }
     }
 }
