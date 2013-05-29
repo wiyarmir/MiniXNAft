@@ -16,6 +16,7 @@ namespace MiniXNAft.Graphics {
         private int xoffset;
         private int yoffset;
         private bool doScaling = true;
+        private SpriteBatch spriteBatch;
         public SpriteFont font { get; set; }
 
         public Drawer(SharedGraphicsDeviceManager graphics, Texture2D spriteSheet) {
@@ -28,23 +29,23 @@ namespace MiniXNAft.Graphics {
 
         }
 
-        public void Draw(int x, int y, int spritex, int spritey, SpriteBatch spriteBatch, Color color) {
-            Draw(x, y, spritex, spritey, 8, 8, spriteBatch, color);
+        public void Draw(int x, int y, int spritex, int spritey, Color color) {
+            Draw(x, y, spritex, spritey, 8, 8, color);
         }
 
-        public void Draw(int x, int y, int sprite, SpriteBatch spriteBatch, Color color) {
-            Draw(x, y, (sprite % 32), (sprite / 32), spriteBatch, color);
+        public void Draw(int x, int y, int sprite, Color color) {
+            Draw(x, y, (sprite % 32), (sprite / 32), color);
         }
 
-        public void Draw(int x, int y, int sprite, SpriteBatch spriteBatch, Color color, SpriteEffects se) {
-            Draw(x, y, (sprite % 32), (sprite / 32), 8, 8, spriteBatch, color, se);
+        public void Draw(int x, int y, int sprite, Color color, SpriteEffects se) {
+            Draw(x, y, (sprite % 32), (sprite / 32), 8, 8, color, se);
         }
 
-        public void Draw(int x, int y, int spritex, int spritey, int spritew, int spriteh, SpriteBatch spriteBatch, Color color) {
-            Draw(x, y, spritex, spritey, spritew, spriteh, spriteBatch, color, SpriteEffects.None);
+        public void Draw(int x, int y, int spritex, int spritey, int spritew, int spriteh, Color color) {
+            Draw(x, y, spritex, spritey, spritew, spriteh, color, SpriteEffects.None);
         }
 
-        public void Draw(int x, int y, int spritex, int spritey, int spritew, int spriteh, SpriteBatch spriteBatch, Color color, SpriteEffects se) {
+        virtual public void Draw(int x, int y, int spritex, int spritey, int spritew, int spriteh, Color color, SpriteEffects se) {
             // Disable smoothing
             // graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             if (doScaling) {
@@ -86,6 +87,22 @@ namespace MiniXNAft.Graphics {
 
         internal void DrawString(SpriteBatch spriteBatch, string p) {
             DrawString(spriteBatch, p, new Vector2(0, 0), Microsoft.Xna.Framework.Color.White);
+        }
+
+        internal void StartDrawing() {
+            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            // FIXME use SpriteSortMode.Defered when not debugging 
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
+
+        }
+
+        internal void EndDrawing() {
+            spriteBatch.End();
+        }
+
+        internal void Init() {
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
         }
     }
 }

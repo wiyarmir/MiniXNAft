@@ -22,7 +22,6 @@ namespace MiniXNAft {
     public partial class GamePage : PhoneApplicationPage {
         ContentManager contentManager;
         GameTimer timer;
-        SpriteBatch spriteBatch;
         Texture2D spriteSheet;
         Player player;
         private SharedGraphicsDeviceManager graphics;
@@ -65,13 +64,12 @@ namespace MiniXNAft {
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 480;
 
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
 
             spriteSheet = this.contentManager.Load<Texture2D>("icons");
             drawer = new Drawer(graphics, spriteSheet);
 
+            drawer.Init();
 
             drawer.font = this.contentManager.Load<SpriteFont>("UI");
 
@@ -147,25 +145,21 @@ namespace MiniXNAft {
 
 
 
-            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            drawer.StartDrawing();
 
-
-            // FIXME use SpriteSortMode.Defered when not debugging 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
-
-            level.renderBackground(drawer, spriteBatch, xScrolldp, yScrolldp);
+            level.renderBackground(drawer, xScrolldp, yScrolldp);
 
             drawer.SetOffset(xScrolldp, yScrolldp);
-            slime.Draw(drawer, spriteBatch);
+            slime.Draw(drawer);
             drawer.ResetOffset();
-            
-            player.Draw(drawer, spriteBatch);
+
+            player.Draw(drawer);
 
 
             //fr.Draw(new GameTime(e.TotalTime, e.ElapsedTime), spriteBatch,drawer.font);
-            fr.Print(new GameTime(e.TotalTime, e.ElapsedTime));
-            spriteBatch.End();
+            //fr.Print(new GameTime(e.TotalTime, e.ElapsedTime));
 
+            drawer.EndDrawing();
         }
 
     }

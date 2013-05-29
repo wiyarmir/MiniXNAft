@@ -47,7 +47,6 @@ namespace MiniXNAft.Entities {
 
         // animation
         private double elapsedSinceLastFrame = 0;
-        private bool playingAnimation = false;
         int CurrentFrame = 0;
         int TotalFrames = 2;
         double FrameDelay = .1D;
@@ -198,7 +197,7 @@ namespace MiniXNAft.Entities {
             }
         }
 
-        new public void Draw(Drawer drawer, SpriteBatch spriteBatch) {
+        new public void Draw(Drawer drawer) {
             int spriteOffset = 0;
             switch (orientation) {
                 case Movement.Left:
@@ -292,9 +291,9 @@ namespace MiniXNAft.Entities {
 
 		    }*/
 
-            // drawer.Draw(xo + 8, yo + 8, 0 + spriteOffset, 14 + CurrentFrame * 2, 16, 16, spriteBatch, Color.Pink);
+            // drawer.Draw(xo + 8, yo + 8, 0 + spriteOffset, 14 + CurrentFrame * 2, 16, 16, Color.Pink);
             drawer.SetScaling(false);
-            drawer.Draw(Width / 2 - 8, Height / 2 - 8, 0 + spriteOffset, 14 + CurrentFrame * 2, 16, 16, spriteBatch, Color.Pink);
+            drawer.Draw(Width / 2 - 8, Height / 2 - 8, 0 + spriteOffset, 14 + CurrentFrame * 2, 16, 16, Color.Pink);
             drawer.SetScaling(true);
         }
 

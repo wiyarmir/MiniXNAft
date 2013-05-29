@@ -24,7 +24,7 @@ namespace MiniXNAft.Entities {
         public bool removed;
         public Level level;
 
-        public void Draw(Drawer drawer, SpriteBatch spriteBatch) {
+        public void Draw(Drawer drawer) {
         }
 
         public void Update() {
@@ -108,10 +108,10 @@ namespace MiniXNAft.Entities {
 
                 e.touchedBy(this);
             }
-           
+
             //FIXME
             // isInside.removeAll(wasInside);
-            
+
             for (int i = 0; i < isInside.Count; i++) {
                 Entity e = isInside[i];
                 if (e == this)

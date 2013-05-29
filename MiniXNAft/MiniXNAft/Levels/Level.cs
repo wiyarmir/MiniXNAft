@@ -51,7 +51,7 @@ namespace MiniXNAft.Levels {
         }
 
 
-        public void renderBackground(Drawer drawer, SpriteBatch spriteBatch, int xScroll, int yScroll) {
+        public void renderBackground(Drawer drawer, int xScroll, int yScroll) {
             int xo = xScroll >> 4;
             int yo = yScroll >> 4;
 
@@ -62,7 +62,7 @@ namespace MiniXNAft.Levels {
             drawer.SetOffset(xScroll , yScroll );
             for (int y = yo; y <= h + yo; y++) {
                 for (int x = xo; x <= w + xo; x++) {
-                    getTile(x, y).Draw(drawer, spriteBatch, this, x, y);
+                    getTile(x, y).Draw(drawer, this, x, y);
                 }
             }
             drawer.ResetOffset();
@@ -97,7 +97,7 @@ namespace MiniXNAft.Levels {
             // Collections.sort(list, spriteSorter);
 
             for (int i = 0; i < list.Count; i++) {
-                list[i].Draw(drawer, spriteBatch);
+                list[i].Draw(drawer);
             }
         }
 

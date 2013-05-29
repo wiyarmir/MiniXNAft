@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MiniXNAft {
     public class FrameRateCounter   {
-        ContentManager content;
 
         int frameRate = 0;
         int frameCounter = 0;

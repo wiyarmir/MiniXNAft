@@ -73,7 +73,7 @@ namespace MiniXNAft.Entities {
 
         }
 
-        new public void Draw(Drawer drawer, SpriteBatch spriteBatch) {
+        new public void Draw(Drawer drawer) {
             int xt = 0;
             int yt = 20;
 
@@ -97,7 +97,7 @@ namespace MiniXNAft.Entities {
                 col = Color.get(-1, 555, 555, 555);
             }*/
 
-            drawer.Draw(xo, yo, xt, yt, 16, 16, spriteBatch, col);
+            drawer.Draw(xo, yo, xt, yt, 16, 16, col);
 
             /*
             drawer.Draw(xo + 0, yo + 0, xt + yt * 32, col, 0);

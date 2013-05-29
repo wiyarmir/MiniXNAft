@@ -85,6 +85,7 @@
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Drawer3D.cs" />
     <Compile Include="Graphics\Drawer.cs" />
     <Compile Include="IInteractive.cs" />
     <Compile Include="IMotionInteractive.cs" />

@@ -6,6 +6,7 @@ using MiniXNAft.Levels.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MiniXNAft.Entities;
+using MiniXNAft.Graphics;
 
 namespace MiniXNAft.Levels.Tiles {
     class RockTile : Tile {
@@ -15,7 +16,7 @@ namespace MiniXNAft.Levels.Tiles {
 
         }
 
-        public override void Draw(Graphics.Drawer drawer, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Level level, int x, int y) {
+        public override void Draw(Drawer drawer, Level level, int x, int y) {
             Color col = Color.SandyBrown;
             Color transitionColor = Color.SandyBrown;
 
@@ -31,54 +32,54 @@ namespace MiniXNAft.Levels.Tiles {
 
             if (!u && !l) {
                 if (!ul) {
-                    drawer.Draw(x * 16 + 0, y * 16 + 0, 0, spriteBatch, col);
+                    drawer.Draw(x * 16 + 0, y * 16 + 0, 0, col);
                 } else {
-                    drawer.Draw(x * 16 + 0, y * 16 + 0, 7 + 0 * 32, spriteBatch, transitionColor, 
+                    drawer.Draw(x * 16 + 0, y * 16 + 0, 7 + 0 * 32, transitionColor, 
                         SpriteEffects.FlipHorizontally|SpriteEffects.FlipVertically); // 3
                 }
             } else {
-                drawer.Draw(x * 16 + 0, y * 16 + 0, (l ? 6 : 5) + (u ? 2 : 1)* 32, spriteBatch, transitionColor, 
+                drawer.Draw(x * 16 + 0, y * 16 + 0, (l ? 6 : 5) + (u ? 2 : 1)* 32, transitionColor, 
                     SpriteEffects.FlipHorizontally|SpriteEffects.FlipVertically); // 3
             }
             if (!u && !r) {
                 if (!ur) {
-                    drawer.Draw(x * 16 + 8, y * 16 + 0, 1, spriteBatch, col);
+                    drawer.Draw(x * 16 + 8, y * 16 + 0, 1, col);
                 } else {
-                    drawer.Draw(x * 16 + 8, y * 16 + 0, 8 + 0 * 32, spriteBatch, transitionColor, 
+                    drawer.Draw(x * 16 + 8, y * 16 + 0, 8 + 0 * 32, transitionColor, 
                         SpriteEffects.FlipHorizontally|SpriteEffects.FlipVertically);//3
                 }
             } else
-                drawer.Draw(x * 16 + 8, y * 16 + 0, (r ? 4 : 5) + (u ? 2 : 1) * 32, spriteBatch, transitionColor, 
+                drawer.Draw(x * 16 + 8, y * 16 + 0, (r ? 4 : 5) + (u ? 2 : 1) * 32, transitionColor, 
                     SpriteEffects.FlipHorizontally|SpriteEffects.FlipVertically); //3
 
             if (!d && !l) {
                 if (!dl) {
-                    drawer.Draw(x * 16 + 0, y * 16 + 8, 2, spriteBatch, col);
+                    drawer.Draw(x * 16 + 0, y * 16 + 8, 2, col);
                 } else {
-                    drawer.Draw(x * 16 + 0, y * 16 + 8, 7 + 1 * 32, spriteBatch, transitionColor, 
+                    drawer.Draw(x * 16 + 0, y * 16 + 8, 7 + 1 * 32, transitionColor, 
                         SpriteEffects.FlipHorizontally|SpriteEffects.FlipVertically);//3
                 }
             } else {
-                drawer.Draw(x * 16 + 0, y * 16 + 8, (l ? 6 : 5) + (d ? 0 : 1)  * 32, spriteBatch, transitionColor, 
+                drawer.Draw(x * 16 + 0, y * 16 + 8, (l ? 6 : 5) + (d ? 0 : 1)  * 32, transitionColor, 
                     SpriteEffects.FlipHorizontally|SpriteEffects.FlipVertically);//3
             }
             if (!d && !r) {
                 if (!dr){
-                    drawer.Draw(x * 16 + 8, y * 16 + 8, 3, spriteBatch, col);
+                    drawer.Draw(x * 16 + 8, y * 16 + 8, 3, col);
                 }else{
-                    drawer.Draw(x * 16 + 8, y * 16 + 8, 8 + 1 * 32, spriteBatch, transitionColor, 
+                    drawer.Draw(x * 16 + 8, y * 16 + 8, 8 + 1 * 32, transitionColor, 
                         SpriteEffects.FlipHorizontally|SpriteEffects.FlipVertically);//3
                 }
             } else{
-                drawer.Draw(x * 16 + 8, y * 16 + 8, (r ? 4 : 5) + (d ? 0 : 1) * 32, spriteBatch, transitionColor, 
+                drawer.Draw(x * 16 + 8, y * 16 + 8, (r ? 4 : 5) + (d ? 0 : 1) * 32, transitionColor, 
                     SpriteEffects.FlipHorizontally|SpriteEffects.FlipVertically);//3
             }
 
             /*
-            drawer.Draw(x * 16 + 0, y * 16 + 0, 37, spriteBatch, col);
-            drawer.Draw(x * 16 + 8, y * 16 + 0, 37, spriteBatch, col);
-            drawer.Draw(x * 16 + 0, y * 16 + 8, 37, spriteBatch, col);
-            drawer.Draw(x * 16 + 8, y * 16 + 8, 37, spriteBatch, col);
+            drawer.Draw(x * 16 + 0, y * 16 + 0, 37, col);
+            drawer.Draw(x * 16 + 8, y * 16 + 0, 37, col);
+            drawer.Draw(x * 16 + 0, y * 16 + 8, 37, col);
+            drawer.Draw(x * 16 + 8, y * 16 + 8, 37, col);
              * */
         }
 

@@ -123,7 +123,7 @@ namespace MiniXNAft.Levels {
 
         public static byte[][] createAndValidateUndergroundMap(int w, int h,
                 int depth) {
-            int attempt = 0;
+           // int attempt = 0;
             do {
                 byte[][] result = createUndergroundMap(w, h, depth);
 

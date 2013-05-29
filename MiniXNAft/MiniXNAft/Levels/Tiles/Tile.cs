@@ -62,11 +62,11 @@ namespace MiniXNAft.Levels.Tiles {
             tiles[id] = this;
         }
 
-        public virtual void Draw(Drawer drawer, SpriteBatch spriteBatch, Level level, int x, int y) {
-            drawer.Draw(x * 16 + 0, y * 16 + 0, 21, spriteBatch, Color.White);
-            drawer.Draw(x * 16 + 8, y * 16 + 0, 21, spriteBatch, Color.White);
-            drawer.Draw(x * 16 + 0, y * 16 + 8, 21, spriteBatch, Color.White);
-            drawer.Draw(x * 16 + 8, y * 16 + 8, 21, spriteBatch, Color.White);
+        public virtual void Draw(Drawer drawer, Level level, int x, int y) {
+            drawer.Draw(x * 16 + 0, y * 16 + 0, 21, Color.White);
+            drawer.Draw(x * 16 + 8, y * 16 + 0, 21, Color.White);
+            drawer.Draw(x * 16 + 0, y * 16 + 8, 21, Color.White);
+            drawer.Draw(x * 16 + 8, y * 16 + 8, 21, Color.White);
         }
 
         virtual public bool mayPass(Level level, int x, int y, Entity e) {
