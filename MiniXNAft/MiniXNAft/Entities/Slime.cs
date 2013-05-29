@@ -33,8 +33,8 @@ namespace MiniXNAft.Entities {
                     ya = (random.Next(3) - 1);
 
                     if (level.player != null) {
-                        int xd = (int)level.player.X - x;
-                        int yd = (int)level.player.Y - y;
+                        int xd = level.player.x - x;
+                        int yd = level.player.y - y;
                         if (xd * xd + yd * yd < 50 * 50) {
                             if (xd < 0)
                                 xa = -1;

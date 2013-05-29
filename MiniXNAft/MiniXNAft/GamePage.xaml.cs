@@ -31,6 +31,7 @@ namespace MiniXNAft {
         Level level;
 
         public const int ScaleFactor = 4;
+        private FrameRateCounter fr;
 
         public GamePage() {
             InitializeComponent();
@@ -40,7 +41,10 @@ namespace MiniXNAft {
 
             this.graphics = SharedGraphicsDeviceManager.Current;
 
+
             Initialize();
+
+
         }
 
         private void Initialize() {
@@ -50,14 +54,17 @@ namespace MiniXNAft {
             timer.Update += OnUpdate;
             timer.Draw += OnDraw;
 
-            // set landscape
-            graphics.PreferredBackBufferWidth = 480;
-            graphics.PreferredBackBufferHeight = 800;
+            fr = new FrameRateCounter();
 
 
         }
 
         private void LoadContent() {
+
+            // set landscape
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 480;
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
@@ -66,18 +73,22 @@ namespace MiniXNAft {
             drawer = new Drawer(graphics, spriteSheet);
 
 
+            drawer.font = this.contentManager.Load<SpriteFont>("UI");
+
             player = new Player(drawer);
 
             //
             level = new Levels.Level(128, 128);
-            level.player = player;
+            level.add(player);
 
             slime = new Slime(3);
             slime.level = level;
             slime.findStartPos(slime.level);
 
-            slime.x = (int)player.X - 10;
-            slime.y = (int)player.Y - 10;
+            slime.x = player.x - 10;
+            slime.y = player.y - 10;
+
+            level.add(slime);
             // Start the timer
             timer.Start();
 
@@ -106,6 +117,9 @@ namespace MiniXNAft {
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         private void OnUpdate(object sender, GameTimerEventArgs e) {
+
+            fr.Update(new GameTime(e.TotalTime, e.ElapsedTime));
+
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             TouchCollection touches = TouchPanel.GetState();
 
@@ -119,24 +133,37 @@ namespace MiniXNAft {
         /// </summary>
         private void OnDraw(object sender, GameTimerEventArgs e) {
 
-            int xScroll = player.x - drawer.Width / 2;
-            int yScroll = player.y - (drawer.Height - 8) / 2;
-            if (xScroll < 16)
-                xScroll = 16;
-            if (yScroll < 16)
-                yScroll = 16;
-            if (xScroll > level.w * 16 - drawer.Width - 16)
-                xScroll = level.w * 16 - drawer.Width - 16;
-            if (yScroll > level.h * 16 - drawer.Height - 16)
-                yScroll = level.h * 16 - drawer.Height - 16;
+
+            int xScrolldp = player.x - drawer.Width / 2;
+            int yScrolldp = player.y - (drawer.Height - 8) / 2;
+            if (xScrolldp < 16)
+                xScrolldp = 16;
+            if (yScrolldp < 16)
+                yScrolldp = 16;
+            if (xScrolldp > level.w * 16 - drawer.Width - 16)
+                xScrolldp = level.w * 16 - drawer.Width - 16;
+            if (yScrolldp > level.h * 16 - drawer.Height - 16)
+                yScrolldp = level.h * 16 - drawer.Height - 16;
+
+
 
             graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
 
-            level.renderBackground(drawer, spriteBatch, xScroll, yScroll);
-            player.Draw(drawer, spriteBatch);
+            // FIXME use SpriteSortMode.Defered when not debugging 
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
+
+            level.renderBackground(drawer, spriteBatch, xScrolldp, yScrolldp);
+
+            drawer.SetOffset(xScrolldp, yScrolldp);
             slime.Draw(drawer, spriteBatch);
+            drawer.ResetOffset();
+            
+            player.Draw(drawer, spriteBatch);
+
+
+            //fr.Draw(new GameTime(e.TotalTime, e.ElapsedTime), spriteBatch,drawer.font);
+            fr.Print(new GameTime(e.TotalTime, e.ElapsedTime));
             spriteBatch.End();
 
         }

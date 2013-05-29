@@ -5,8 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using MiniXNAft.Entities;
 using MiniXNAft.Levels.Tiles;
@@ -14,6 +12,7 @@ using MiniXNAft.Items;
 using MiniXNAft.Graphics;
 using MiniXNAft.Items.Resources;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace MiniXNAft.Levels.Tiles {
     public class Tile {
@@ -63,10 +62,14 @@ namespace MiniXNAft.Levels.Tiles {
             tiles[id] = this;
         }
 
-        public void Draw(Drawer drawer, SpriteBatch spriteBatch, Level level, int x, int y) {
+        public virtual void Draw(Drawer drawer, SpriteBatch spriteBatch, Level level, int x, int y) {
+            drawer.Draw(x * 16 + 0, y * 16 + 0, 21, spriteBatch, Color.White);
+            drawer.Draw(x * 16 + 8, y * 16 + 0, 21, spriteBatch, Color.White);
+            drawer.Draw(x * 16 + 0, y * 16 + 8, 21, spriteBatch, Color.White);
+            drawer.Draw(x * 16 + 8, y * 16 + 8, 21, spriteBatch, Color.White);
         }
 
-        public bool mayPass(Level level, int x, int y, Entity e) {
+        virtual public bool mayPass(Level level, int x, int y, Entity e) {
             return true;
         }
 

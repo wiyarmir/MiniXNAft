@@ -14,6 +14,7 @@ using MiniXNAft.Levels.Tiles;
 using MiniXNAft.Levels;
 using MiniXNAft.Graphics;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace MiniXNAft.Levels {
     public class Level {
@@ -50,21 +51,61 @@ namespace MiniXNAft.Levels {
         }
 
 
-        public void renderBackground(Drawer drawer, SpriteBatch spriteBatch, int width, int height) {
-            int w = (width + 15) >> 4;
-            int h = (height + 15) >> 4;
-            for (int y = 0; y <= h; y++) {
-                for (int x = 0; x <= w; x++) {
+        public void renderBackground(Drawer drawer, SpriteBatch spriteBatch, int xScroll, int yScroll) {
+            int xo = xScroll >> 4;
+            int yo = yScroll >> 4;
+
+
+            int w = (drawer.Width + 15) >> 4;
+            int h = (drawer.Height + 15) >> 4;
+
+            drawer.SetOffset(xScroll , yScroll );
+            for (int y = yo; y <= h + yo; y++) {
+                for (int x = xo; x <= w + xo; x++) {
                     getTile(x, y).Draw(drawer, spriteBatch, this, x, y);
                 }
             }
+            drawer.ResetOffset();
 
+
+           // drawer.DrawString(spriteBatch, "xs:" + xScroll + "ys:" + yScroll + "xo:" + xo + "yo:" + yo + "w:" + w + "h:" + h);
+        }
+
+        public void renderSprites(Drawer drawer, SpriteBatch spriteBatch, int xScroll, int yScroll) {
+            int xo = xScroll >> 4;
+            int yo = yScroll >> 4;
+            int w = (drawer.Width + 15) >> 4;
+            int h = (drawer.Height + 15) >> 4;
+
+            drawer.SetOffset(xScroll, yScroll);
+            for (int y = yo; y <= h + yo; y++) {
+                for (int x = xo; x <= w + xo; x++) {
+                    if (x < 0 || y < 0 || x >= this.w || y >= this.h)
+                        continue;
+                    //rowSprites.addAll(entitiesInTiles[x + y * this.w]);
+                }
+                /*if (rowSprites.size() > 0) {
+                    sortAndRender(screen, rowSprites);
+                }
+                rowSprites.clear();
+            */
+            }
+            drawer.ResetOffset();
+        }
+
+        private void sortAndRender(Drawer drawer, SpriteBatch spriteBatch, List<Entity> list) {
+            // Collections.sort(list, spriteSorter);
+
+            for (int i = 0; i < list.Count; i++) {
+                list[i].Draw(drawer, spriteBatch);
+            }
         }
 
         public Tile getTile(int x, int y) {
             if (x < 0 || y < 0 || x >= w || y >= h)
                 return Tile.rock;
-            return Tile.tiles[tiles[x + y * w]];
+            Tile ret = Tile.tiles[tiles[x + y * w]];
+            return ret;
         }
 
         public void setTile(int x, int y, Tile t, int dataVal) {
@@ -87,6 +128,9 @@ namespace MiniXNAft.Levels {
         }
 
         public void add(Entity entity) {
+            if (entity is Player) {
+                player = (Player)entity;
+            }
             entity.removed = false;
             entities.Add(entity);
             entity.init(this);

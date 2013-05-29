@@ -12,17 +12,50 @@ namespace MiniXNAft.Levels.Tiles {
 
         public GrassTile(int p)
             : base(p) {
+            connectsToGrass = true;
 
         }
 
-        new public void Draw(Drawer drawer, SpriteBatch spriteBatch, Level level, int x, int y) {
+        public override void Draw(Drawer drawer, SpriteBatch spriteBatch, Level level, int x, int y) {
             bool u = !level.getTile(x, y - 1).connectsToGrass;
             bool d = !level.getTile(x, y + 1).connectsToGrass;
             bool l = !level.getTile(x - 1, y).connectsToGrass;
             bool r = !level.getTile(x + 1, y).connectsToGrass;
 
+            Color col = Color.LightGreen;
+            Color transitionColor = col;//Color.LightGoldenrodYellow;
 
-            drawer.Draw(x, y, 0, spriteBatch, Color.Green);
+            if (!u && !l) {
+                //screen.render(x * 16 + 0, y * 16 + 0, 0, col, 0);
+                drawer.Draw(x * 16 + 0, y * 16 + 0, 0, spriteBatch, Color.LightGreen);
+            } else {
+                drawer.Draw(x * 16 + 0, y * 16 + 0, (l ? 11 : 12) + (u ? 0 : 1) * 32, spriteBatch, transitionColor);
+            }
+
+            if (!u && !r) {
+                //screen.render(x * 16 + 8, y * 16 + 0, 1, col, 0);
+                drawer.Draw(x * 16 + 8, y * 16 + 0, 0, spriteBatch, Color.LightGreen);
+            } else {
+                drawer.Draw(x * 16 + 8, y * 16 + 0, (r ? 13 : 12) + (u ? 0 : 1) * 32, spriteBatch, transitionColor);
+            }
+            if (!d && !l) {
+                //screen.render(x * 16 + 0, y * 16 + 8, 2, col, 0);
+                drawer.Draw(x * 16 + 0, y * 16 + 8, 2, spriteBatch, Color.LightGreen);
+            } else {
+                //screen.render(x * 16 + 0, y * 16 + 8, (l ? 11 : 12) + (d ? 2 : 1)
+                //        * 32, transitionColor, 0);
+                drawer.Draw(x * 16 + 0, y * 16 + 8, (l ? 11 : 12) + (d ? 2 : 1) * 32, spriteBatch, transitionColor);
+            }
+            if (!d && !r) {
+                //screen.render(x * 16 + 8, y * 16 + 8, 3, col, 0);
+                drawer.Draw(x * 16 + 8, y * 16 + 8, 3, spriteBatch, Color.LightGreen);
+            } else {
+                drawer.Draw(x * 16 + 8, y * 16 + 8, (r ? 13 : 12) + (d ? 2 : 1) * 32, spriteBatch, transitionColor);
+            }
+
+
+            //drawer.DrawString(spriteBatch, "(" + x + "," + y + ")", new Vector2(x * 16, y * 16), Color.Red);
+            //drawer.Draw(x * 8 * GamePage.ScaleFactor, y * 8 * GamePage.ScaleFactor, 0, spriteBatch, Color.LightGreen);
         }
 
     }

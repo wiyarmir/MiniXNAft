@@ -81,6 +81,7 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\ItemEntity.cs" />
     <Compile Include="Entities\Player.cs" />
+    <Compile Include="FrameRateCounter.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>

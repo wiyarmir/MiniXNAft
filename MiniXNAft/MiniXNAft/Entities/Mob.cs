@@ -120,8 +120,8 @@ namespace MiniXNAft.Entities {
                 return;
 
             if (level.player != null) {
-                int xd = (int)level.player.X - x;
-                int yd = (int)level.player.Y - y;
+                int xd = level.player.x - x;
+                int yd = level.player.y - y;
                 if (xd * xd + yd * yd < 80 * 80) {
                     //Sound.monsterHurt.play();
                 }
@@ -149,8 +149,8 @@ namespace MiniXNAft.Entities {
             int yy = y * 16 + 8;
 
             if (level.player != null) {
-                int xd = (int)level.player.X - xx;
-                int yd = (int)level.player.Y - yy;
+                int xd = level.player.x - xx;
+                int yd = level.player.y - yy;
                 if (xd * xd + yd * yd < 80 * 80)
                     return false;
             }

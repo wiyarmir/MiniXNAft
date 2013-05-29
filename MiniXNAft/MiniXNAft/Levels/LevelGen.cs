@@ -81,9 +81,13 @@ namespace MiniXNAft.Levels {
         public static byte[][] createAndValidateTopMap(int w, int h) {
             int attempt = 0;
             do {
-                // byte[][] result = createTopMap(w, h);
+                if (++attempt > 100) {
+                    throw new Exception("No vea zi tarda bieo");
+                }
 
+                byte[][] result = createTopMap(w, h);
 
+                /*
                 byte[] map = new byte[w * h];
                 byte[] data = new byte[w * h];
                 for (int y = 0; y < h; y++) {
@@ -95,8 +99,9 @@ namespace MiniXNAft.Levels {
                 }
 
                 byte[][] result = { map, data };
+                 * */
 
-                /*
+
                 int[] count = new int[256];
 
                 for (int i = 0; i < w * h; i++) {
@@ -108,9 +113,9 @@ namespace MiniXNAft.Levels {
                     continue;
                 if (count[Tile.grass.id & 0xff] < 100)
                     continue;
-                if (count[Tile.tree.id & 0xff] < 100)
-                    continue;
-                */
+               // if (count[Tile.tree.id & 0xff] < 100)
+               //     continue;
+
                 return result;
 
             } while (true);
@@ -182,7 +187,7 @@ namespace MiniXNAft.Levels {
                     }
                 }
             }
-            /*
+            
             for (int i = 0; i < w * h / 2800; i++) {
                 int xs = random.Next(w);
                 int ys = random.Next(h);
@@ -202,7 +207,7 @@ namespace MiniXNAft.Levels {
                     }
                 }
             }
-            */
+            
 
             /*
              * for (int i = 0; i < w * h / 2800; i++) { int xs = random.Next(w);
@@ -343,25 +348,7 @@ namespace MiniXNAft.Levels {
                 }
             }
 
-            if (depth < 3) {
-                int count = 0;
-            stairsLoop: for (int i = 0; i < w * h / 100; i++) {
-                    int x = random.Next(w - 20) + 10;
-                    int y = random.Next(h - 20) + 10;
 
-                    for (int yy = y - 1; yy <= y + 1; yy++)
-                        for (int xx = x - 1; xx <= x + 1; xx++) {
-                            if (map[xx + yy * w] != Tile.rock.id) {
-                                //goto stairsLoop;
-                            }
-                        }
-
-                    map[x + y * w] = Tile.stairsDown.id;
-                    count++;
-                    if (count == 4)
-                        break;
-                }
-            }
 
             return new byte[][] { map, data };
         }
