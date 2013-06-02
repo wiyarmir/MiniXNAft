@@ -10,13 +10,13 @@ using Microsoft.Xna.Framework;
 
 namespace MiniXNAft.Graphics {
     public class Drawer {
-        private Microsoft.Xna.Framework.SharedGraphicsDeviceManager graphics;
-        public Microsoft.Xna.Framework.Graphics.Texture2D spriteSheet;
+        protected SharedGraphicsDeviceManager graphics;
+        public Texture2D spriteSheet;
         public int Height, Width;
-        private int xoffset;
-        private int yoffset;
-        private bool doScaling = true;
-        private SpriteBatch spriteBatch;
+        protected int xoffset;
+        protected int yoffset;
+        protected bool doScaling = true;
+        protected SpriteBatch spriteBatch;
         public SpriteFont font { get; set; }
 
         public Drawer(SharedGraphicsDeviceManager graphics, Texture2D spriteSheet) {
@@ -89,20 +89,21 @@ namespace MiniXNAft.Graphics {
             DrawString(spriteBatch, p, new Vector2(0, 0), Microsoft.Xna.Framework.Color.White);
         }
 
-        internal void StartDrawing() {
+        virtual internal void StartDrawing() {
             graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
             // FIXME use SpriteSortMode.Defered when not debugging 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
         }
 
-        internal void EndDrawing() {
-            spriteBatch.End();
-        }
-
-        internal void Init() {
+        virtual internal void Init() {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
         }
+
+        virtual internal void EndDrawing() {
+            spriteBatch.End();
+        }
+
     }
 }

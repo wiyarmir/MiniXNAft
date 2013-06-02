@@ -67,7 +67,13 @@ namespace MiniXNAft {
 
 
             spriteSheet = this.contentManager.Load<Texture2D>("icons");
-            drawer = new Drawer(graphics, spriteSheet);
+
+
+            //drawer = new Drawer(graphics, spriteSheet);
+            drawer = new Drawer3D(graphics, spriteSheet);
+
+            System.Diagnostics.Debug.WriteLine("using drawer:" + drawer);
+           
 
             drawer.Init();
 
@@ -151,15 +157,47 @@ namespace MiniXNAft {
 
             drawer.SetOffset(xScrolldp, yScrolldp);
             slime.Draw(drawer);
-            drawer.ResetOffset();
 
             player.Draw(drawer);
 
+            drawer.ResetOffset();
 
             //fr.Draw(new GameTime(e.TotalTime, e.ElapsedTime), spriteBatch,drawer.font);
             //fr.Print(new GameTime(e.TotalTime, e.ElapsedTime));
+            
+            renderGui();
 
             drawer.EndDrawing();
+        }
+        private void renderGui() {
+            for (int y = 0; y < 2; y++) {
+                for (int x = 0; x < 10; x++) {
+                    drawer.Draw(x * 8, drawer.Height - 16 + y * 8, 0 + 11 * 32, Color.Black);
+                }
+            }
+
+            for (int i = 0; i < 10; i++) {
+                if (i < player.health)
+                    drawer.Draw(i * 8, drawer.Height - 16, 0 + 11 * 32, Color.PaleVioletRed);
+                else
+                    drawer.Draw(i * 8, drawer.Height - 16, 0 + 11 * 32, Color.Black);
+
+                if (player.staminaRechargeDelay > 0) {
+                    if (player.staminaRechargeDelay / 4 % 2 == 0)
+                        drawer.Draw(i * 8, drawer.Height - 8, 1 + 11 * 32, Color.Blue);
+                    else
+                        drawer.Draw(i * 8, drawer.Height - 8, 1 + 11 * 32, Color.LightBlue);
+                } else {
+                    if (i < player.stamina)
+                        drawer.Draw(i * 8, drawer.Height - 8, 1 + 11 * 32, Color.Yellow);
+                    else
+                        drawer.Draw(i * 8, drawer.Height - 8, 1 + 11 * 32, Color.Black);
+                }
+            }
+            if (player.activeItem != null) {
+                //    player.activeItem.renderInventory(screen, 10 * 8, drawer.Height - 16);
+            }
+
         }
 
     }

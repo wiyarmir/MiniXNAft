@@ -76,6 +76,7 @@ namespace MiniXNAft.Levels {
             int yo = yScroll >> 4;
             int w = (drawer.Width + 15) >> 4;
             int h = (drawer.Height + 15) >> 4;
+            w--; h--;
 
             drawer.SetOffset(xScroll, yScroll);
             for (int y = yo; y <= h + yo; y++) {

@@ -190,10 +190,9 @@ namespace MiniXNAft.Entities {
                 */
 
                 // update inherited from Entity
-                x = (int)_X;
-                y = (int)_Y;
-               // System.Diagnostics.Debug.WriteLine("x:" + x + " _X:" + _X);
-               // System.Diagnostics.Debug.WriteLine("y:" + y + " _Y:" + _Y);
+                // x = (int)_X; y = (int)_Y;
+                // System.Diagnostics.Debug.WriteLine("x:" + x + " _X:" + _X);
+                // System.Diagnostics.Debug.WriteLine("y:" + y + " _Y:" + _Y);
             }
         }
 
@@ -218,26 +217,21 @@ namespace MiniXNAft.Entities {
 
             int xo = x - 8;
             int yo = y - 11;
-            if (isSwimming()) {
-                yo += 4;
-                //int waterColor = Color.get(-1, -1, 115, 335);
-                //if (tickTime / 8 % 2 == 0) {
-                //waterColor = Color.get(-1, 335, 5, 115);
-                //}
-                //screen.render(xo + 0, yo + 3, 5 + 13 * 32, waterColor, 0);
-                //screen.render(xo + 8, yo + 3, 5 + 13 * 32, waterColor, 1);
-            }
+
+            // xo = Width / 2 - 8; yo = Height / 2 - 8;
+            // xo /= GamePage.ScaleFactor; yo /= GamePage.ScaleFactor;
+
 
             /*
-		    if (attackTime > 0 && attackDir == 1) {
-			    screen.render(xo + 0, yo - 4, 6 + 13 * 32,
-					    Color.get(-1, 555, 555, 555), 0);
-			    screen.render(xo + 8, yo - 4, 6 + 13 * 32,
-					    Color.get(-1, 555, 555, 555), 1);
-			    if (attackItem != null) {
-				    attackItem.renderIcon(screen, xo + 4, yo - 4);
-			    }
-		    }
+            if (attackTime > 0 && attackDir == 1) {
+                screen.render(xo + 0, yo - 4, 6 + 13 * 32,
+                        Color.get(-1, 555, 555, 555), 0);
+                screen.render(xo + 8, yo - 4, 6 + 13 * 32,
+                        Color.get(-1, 555, 555, 555), 1);
+                if (attackItem != null) {
+                    attackItem.renderIcon(screen, xo + 4, yo - 4);
+                }
+            }
              * */
 
 
@@ -291,10 +285,32 @@ namespace MiniXNAft.Entities {
 
 		    }*/
 
-            // drawer.Draw(xo + 8, yo + 8, 0 + spriteOffset, 14 + CurrentFrame * 2, 16, 16, Color.Pink);
-            drawer.SetScaling(false);
-            drawer.Draw(Width / 2 - 8, Height / 2 - 8, 0 + spriteOffset, 14 + CurrentFrame * 2, 16, 16, Color.Pink);
-            drawer.SetScaling(true);
+            // drawer.Draw(xo + 8, yo + 8, 0 + spriteOffset, 14 + CurrentFrame * 2, 16,
+            if (isSwimming()) {
+                yo += 4;
+                //int waterColor = Color.get(-1, -1, 115, 335);
+                Color waterColor = Color.Azure;
+
+                //if (tickTime / 8 % 2 == 0) {
+                //waterColor = Color.get(-1, 335, 5, 115);
+                //}
+
+
+                drawer.Draw(xo + 0, yo + 3, 5 + 13 * 32, waterColor);
+                drawer.Draw(xo + 8, yo + 3, 5 + 13 * 32, waterColor, SpriteEffects.FlipHorizontally);
+                //screen.render(xo + 0, yo + 3, 5 + 13 * 32, waterColor, 0);
+                //screen.render(xo + 8, yo + 3, 5 + 13 * 32, waterColor, 1);
+
+
+            }
+
+            if (!isSwimming()) {
+                drawer.Draw(xo, yo, 0 + spriteOffset, 14 + CurrentFrame * 2, 16, 16, Color.Pink);
+            } else {
+                drawer.Draw(xo, yo, 0 + spriteOffset, 14 + CurrentFrame * 2, 16, 8, Color.Pink);
+            }
+
+
         }
 
         public bool payStamina(int cost) {

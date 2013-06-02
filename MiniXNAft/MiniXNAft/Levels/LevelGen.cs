@@ -113,8 +113,8 @@ namespace MiniXNAft.Levels {
                     continue;
                 if (count[Tile.grass.id & 0xff] < 100)
                     continue;
-               // if (count[Tile.tree.id & 0xff] < 100)
-               //     continue;
+                // if (count[Tile.tree.id & 0xff] < 100)
+                //     continue;
 
                 return result;
 
@@ -123,7 +123,7 @@ namespace MiniXNAft.Levels {
 
         public static byte[][] createAndValidateUndergroundMap(int w, int h,
                 int depth) {
-           // int attempt = 0;
+            // int attempt = 0;
             do {
                 byte[][] result = createUndergroundMap(w, h, depth);
 
@@ -187,7 +187,7 @@ namespace MiniXNAft.Levels {
                     }
                 }
             }
-            
+
             for (int i = 0; i < w * h / 2800; i++) {
                 int xs = random.Next(w);
                 int ys = random.Next(h);
@@ -207,7 +207,7 @@ namespace MiniXNAft.Levels {
                     }
                 }
             }
-            
+
 
             /*
              * for (int i = 0; i < w * h / 2800; i++) { int xs = random.Next(w);
@@ -222,7 +222,7 @@ namespace MiniXNAft.Levels {
              */
 
             //Trees
-            /*
+
             for (int i = 0; i < w * h / 400; i++) {
                 int x = random.Next(w);
                 int y = random.Next(h);
@@ -236,7 +236,7 @@ namespace MiniXNAft.Levels {
                     }
                 }
             }
-            */
+
 
             //Flowers
             /*
