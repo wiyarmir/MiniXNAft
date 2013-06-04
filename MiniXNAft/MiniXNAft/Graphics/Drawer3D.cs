@@ -55,7 +55,7 @@ namespace MiniXNAft.Graphics {
 
 
             basicEffect.Projection = projection;
-            basicEffect.World = Matrix.CreateRotationX(MathHelper.ToRadians(60)) * Matrix.CreateScale(1, 1, 0);
+            // basicEffect.World = Matrix.CreateRotationX(MathHelper.ToRadians(60)) * Matrix.CreateScale(1, 1, 0);
 
             // FIXME use SpriteSortMode.Defered when not debugging 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.DepthRead,
