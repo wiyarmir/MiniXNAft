@@ -26,11 +26,12 @@ namespace MiniXNAft {
         Player player;
         private SharedGraphicsDeviceManager graphics;
         private Drawer drawer;
-        Slime slime;
+       // Slime slime;
         Level level;
 
         public const int ScaleFactor = 4;
         private FrameRateCounter fr;
+        //private Zombie zombie;
 
         public GamePage() {
             InitializeComponent();
@@ -73,18 +74,23 @@ namespace MiniXNAft {
             drawer = new Drawer3D(graphics, spriteSheet);
 
             System.Diagnostics.Debug.WriteLine("using drawer:" + drawer);
-           
+
 
             drawer.Init();
 
             drawer.font = this.contentManager.Load<SpriteFont>("UI");
 
+            level = new Levels.Level(128, 128);
+
             player = new Player(drawer);
+            player.findStartPos(level);
 
             //
-            level = new Levels.Level(128, 128);
             level.add(player);
 
+            level.trySpawn(5000);
+
+            /*
             slime = new Slime(3);
             slime.level = level;
             slime.findStartPos(slime.level);
@@ -93,6 +99,14 @@ namespace MiniXNAft {
             slime.y = player.y - 10;
 
             level.add(slime);
+
+            zombie = new Zombie(3);
+            zombie.level = level;
+            zombie.findStartPos(zombie.level);
+
+            zombie.x = player.x + 10;
+            zombie.y = player.y - 20;
+             * */
             // Start the timer
             timer.Start();
 
@@ -127,9 +141,14 @@ namespace MiniXNAft {
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             TouchCollection touches = TouchPanel.GetState();
 
+            level.Update();
             player.Interact(gamePadState, touches);
             player.Update(new GameTime(e.TotalTime, e.ElapsedTime));
+            /*
             slime.Update();
+            zombie.Update();
+        
+             */
         }
 
         /// <summary>
@@ -154,9 +173,13 @@ namespace MiniXNAft {
             drawer.StartDrawing();
 
             level.renderBackground(drawer, xScrolldp, yScrolldp);
-
+            level.renderSprites(drawer, xScrolldp, yScrolldp);
             drawer.SetOffset(xScrolldp, yScrolldp);
+
+            /*
             slime.Draw(drawer);
+            zombie.Draw(drawer);
+            */
 
             player.Draw(drawer);
 
@@ -164,7 +187,7 @@ namespace MiniXNAft {
 
             //fr.Draw(new GameTime(e.TotalTime, e.ElapsedTime), spriteBatch,drawer.font);
             //fr.Print(new GameTime(e.TotalTime, e.ElapsedTime));
-            
+
             renderGui();
 
             drawer.EndDrawing();

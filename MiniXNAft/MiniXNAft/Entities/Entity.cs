@@ -24,13 +24,13 @@ namespace MiniXNAft.Entities {
         public bool removed;
         public Level level;
 
-        public void Draw(Drawer drawer) {
+        virtual public void Draw(Drawer drawer) {
         }
 
-        public void Update() {
+        virtual public void Update() {
         }
 
-        public void remove() {
+        virtual public void remove() {
             removed = true;
         }
 
@@ -38,21 +38,21 @@ namespace MiniXNAft.Entities {
             this.level = level;
         }
 
-        public bool intersects(int x0, int y0, int x1, int y1) {
+        virtual public bool intersects(int x0, int y0, int x1, int y1) {
             return !(x + xr < x0 || y + yr < y0 || x - xr > x1 || y - yr > y1);
         }
 
-        public bool blocks(Entity e) {
+        virtual public bool blocks(Entity e) {
             return false;
         }
 
-        public void hurt(Mob mob, int dmg, int attackDir) {
+        virtual public void hurt(Mob mob, int dmg, int attackDir) {
         }
 
-        public void hurt(Tile tile, int x, int y, int dmg) {
+        virtual public void hurt(Tile tile, int x, int y, int dmg) {
         }
 
-        public bool move(int xa, int ya) {
+        virtual public bool move(int xa, int ya) {
             if (xa != 0 || ya != 0) {
                 bool stopped = true;
                 if (xa != 0 && move2(xa, 0))
@@ -69,7 +69,7 @@ namespace MiniXNAft.Entities {
             return true;
         }
 
-        protected bool move2(int xa, int ya) {
+        virtual protected bool move2(int xa, int ya) {
             if (xa != 0 && ya != 0)
                 throw new NotSupportedException(
                         "Move2 can only move along one axis at a time!");
@@ -127,29 +127,29 @@ namespace MiniXNAft.Entities {
             return true;
         }
 
-        protected void touchedBy(Entity entity) {
+        virtual protected void touchedBy(Entity entity) {
         }
 
-        public bool isBlockableBy(Mob mob) {
+        virtual public bool isBlockableBy(Mob mob) {
             return true;
         }
 
-        public void touchItem(ItemEntity itemEntity) {
+        virtual public void touchItem(ItemEntity itemEntity) {
         }
 
-        public bool canSwim() {
+        virtual public bool canSwim() {
             return false;
         }
 
-        public bool interact(Player player, Item item, int attackDir) {
+        virtual public bool interact(Player player, Item item, int attackDir) {
             return item.interact(player, this, attackDir);
         }
 
-        public bool use(Player player, int attackDir) {
+        virtual public bool use(Player player, int attackDir) {
             return false;
         }
 
-        public int getLightRadius() {
+        virtual public int getLightRadius() {
             return 0;
         }
     }

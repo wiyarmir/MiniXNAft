@@ -18,10 +18,15 @@ namespace MiniXNAft.Entities {
             x = random.Next(64 * 16);
             y = random.Next(64 * 16);
             health = maxHealth = lvl * lvl * 5;
+
+            col = slimeColors[random.Next(slimeColors.Count())];
         }
 
+        private static Color[] slimeColors = { new Color(555F / 555F, 522F / 555F, 100F / 555F, 1F), Color.PaleVioletRed, Color.LawnGreen };
 
-        new public void Update() {
+        Color col;
+
+        override public void Update() {
 
             base.Update();
 
@@ -58,7 +63,7 @@ namespace MiniXNAft.Entities {
                 xa = ya = 0;
             }
         }
-        new protected void die() {
+        override protected void die() {
             base.die();
 
             int count = random.Next(2) + 1;
@@ -73,7 +78,7 @@ namespace MiniXNAft.Entities {
 
         }
 
-        new public void Draw(Drawer drawer) {
+        override public void Draw(Drawer drawer) {
             int xt = 0;
             int yt = 20;
 
@@ -85,7 +90,6 @@ namespace MiniXNAft.Entities {
                 yo -= 4;
             }
 
-            Color col = new Color(555F / 555F, 522F / 555F, 100F / 555F, 1F);
             /*if (lvl == 2)
                 col = Color.get(-1, 100, 522, 555);
             if (lvl == 3)
@@ -107,7 +111,7 @@ namespace MiniXNAft.Entities {
             */
         }
 
-        new protected void touchedBy(Entity entity) {
+        override protected void touchedBy(Entity entity) {
             entity.hurt(this, lvl, dir);
 
         }

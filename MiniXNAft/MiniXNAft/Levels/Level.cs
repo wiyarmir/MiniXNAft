@@ -29,6 +29,8 @@ namespace MiniXNAft.Levels {
         public byte[] tiles;
         public byte[] data;
 
+        public int mobCount = 0;
+
         public List<Entity> entities = new List<Entity>();
 
         public Level(int w, int h) {
@@ -36,13 +38,15 @@ namespace MiniXNAft.Levels {
             this.w = w;
             this.h = h;
             byte[][] maps;
+            //int level = 3;
 
             maps = LevelGen.createAndValidateTopMap(w, h);
-            monsterDensity = 4;
+            monsterDensity = 8;
 
 
             tiles = maps[0];
             data = maps[1];
+
 
             entitiesInTiles = new List<List<Entity>>(w * h);
             for (int i = 0; i < w * h; i++) {
@@ -59,7 +63,7 @@ namespace MiniXNAft.Levels {
             int w = (drawer.Width + 15) >> 4;
             int h = (drawer.Height + 15) >> 4;
 
-            drawer.SetOffset(xScroll , yScroll );
+            drawer.SetOffset(xScroll, yScroll);
             for (int y = yo; y <= h + yo; y++) {
                 for (int x = xo; x <= w + xo; x++) {
                     getTile(x, y).Draw(drawer, this, x, y);
@@ -68,33 +72,34 @@ namespace MiniXNAft.Levels {
             drawer.ResetOffset();
 
 
-           // drawer.DrawString(spriteBatch, "xs:" + xScroll + "ys:" + yScroll + "xo:" + xo + "yo:" + yo + "w:" + w + "h:" + h);
+            // drawer.DrawString(spriteBatch, "xs:" + xScroll + "ys:" + yScroll + "xo:" + xo + "yo:" + yo + "w:" + w + "h:" + h);
         }
 
-        public void renderSprites(Drawer drawer, SpriteBatch spriteBatch, int xScroll, int yScroll) {
+        private List<Entity> rowSprites = new List<Entity>();
+
+        public void renderSprites(Drawer drawer, int xScroll, int yScroll) {
             int xo = xScroll >> 4;
             int yo = yScroll >> 4;
             int w = (drawer.Width + 15) >> 4;
             int h = (drawer.Height + 15) >> 4;
-            w--; h--;
 
             drawer.SetOffset(xScroll, yScroll);
             for (int y = yo; y <= h + yo; y++) {
                 for (int x = xo; x <= w + xo; x++) {
                     if (x < 0 || y < 0 || x >= this.w || y >= this.h)
                         continue;
-                    //rowSprites.addAll(entitiesInTiles[x + y * this.w]);
+                    rowSprites.AddRange(entitiesInTiles[x + y * this.w]);
                 }
-                /*if (rowSprites.size() > 0) {
-                    sortAndRender(screen, rowSprites);
+                if (rowSprites.Count > 0) {
+                    sortAndRender(drawer, rowSprites);
                 }
-                rowSprites.clear();
-            */
+                rowSprites.Clear();
+
             }
             drawer.ResetOffset();
         }
 
-        private void sortAndRender(Drawer drawer, SpriteBatch spriteBatch, List<Entity> list) {
+        private void sortAndRender(Drawer drawer, List<Entity> list) {
             // Collections.sort(list, spriteSorter);
 
             for (int i = 0; i < list.Count; i++) {
@@ -150,6 +155,7 @@ namespace MiniXNAft.Levels {
             if (x < 0 || y < 0 || x >= w || y >= h) {
                 return;
             }
+            mobCount++;
             entitiesInTiles[x + y * w].Add(e);
         }
 
@@ -157,6 +163,7 @@ namespace MiniXNAft.Levels {
             if (x < 0 || y < 0 || x >= w || y >= h) {
                 return;
             }
+            mobCount--;
             entitiesInTiles[x + y * w].Remove(e);
         }
 
@@ -165,7 +172,7 @@ namespace MiniXNAft.Levels {
                 Mob mob;
 
                 int minLevel = 1;
-                int maxLevel = 1;
+                int maxLevel = 3;
 
                 int lvl = random.Next(maxLevel - minLevel + 1) + minLevel;
                 if (random.Next(2) == 0) {
@@ -175,6 +182,8 @@ namespace MiniXNAft.Levels {
                 }
 
                 if (mob.findStartPos(this)) {
+                    System.Diagnostics.Debug.WriteLine("New mob:" + mob + " at " + mob.x + "," + mob.y);
+                    mobCount++;
                     this.add(mob);
                 }
             }
@@ -186,8 +195,9 @@ namespace MiniXNAft.Levels {
             for (int i = 0; i < w * h / 50; i++) {
                 int xt = random.Next(w);
                 int yt = random.Next(h);
-                getTile(xt, yt).tick(this, xt, yt);
+                getTile(xt, yt).Update(this, xt, yt);
             }
+
             for (int i = 0; i < entities.Count; i++) {
                 Entity e = entities[i];
                 int xto = e.x >> 4;
@@ -208,6 +218,8 @@ namespace MiniXNAft.Levels {
                     }
                 }
             }
+
+            System.Diagnostics.Debug.WriteLine("Mob count:" + mobCount);
         }
 
         public List<Entity> getEntities(int x0, int y0, int x1, int y1) {

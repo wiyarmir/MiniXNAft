@@ -73,33 +73,33 @@ namespace MiniXNAft.Levels.Tiles {
             return true;
         }
 
-        public int getLightRadius(Level level, int x, int y) {
+        virtual public int getLightRadius(Level level, int x, int y) {
             return 0;
         }
 
-        public void hurt(Level level, int x, int y, Mob source, int dmg,
+        virtual public void hurt(Level level, int x, int y, Mob source, int dmg,
                 int attackDir) {
         }
 
-        public void bumpedInto(Level level, int xt, int yt, Entity entity) {
+        virtual public void bumpedInto(Level level, int xt, int yt, Entity entity) {
         }
 
-        public void tick(Level level, int xt, int yt) {
+        virtual public void Update(Level level, int xt, int yt) {
         }
 
-        public void steppedOn(Level level, int xt, int yt, Entity entity) {
+        virtual public void steppedOn(Level level, int xt, int yt, Entity entity) {
         }
 
-        public bool interact(Level level, int xt, int yt, Player player,
+        virtual public bool interact(Level level, int xt, int yt, Player player,
                 Item item, int attackDir) {
             return false;
         }
 
-        public bool use(Level level, int xt, int yt, Player player, int attackDir) {
+        virtual public bool use(Level level, int xt, int yt, Player player, int attackDir) {
             return false;
         }
 
-        public bool connectsToLiquid() {
+        virtual public bool connectsToLiquid() {
             return connectsToWater || connectsToLava;
         }
     }

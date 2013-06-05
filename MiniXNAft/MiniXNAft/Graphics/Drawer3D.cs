@@ -47,6 +47,7 @@ namespace MiniXNAft.Graphics {
             Matrix view = Matrix.CreateLookAt(cameraPosition,
                                               cameraPosition + cameraFront,
                                               Vector3.Up);
+
             Matrix offset = Matrix.CreateTranslation(-0.5f, -0.5f, -1f);
 
             //Matrix projection = offset* Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);

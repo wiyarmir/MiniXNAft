@@ -35,7 +35,6 @@ namespace MiniXNAft.Entities {
         public int staminaRechargeDelay;
         public int score;
         public int maxStamina = 10;
-        private int onStairDelay;
         public int invulnerableTime = 0;
 
         // touch zones 
@@ -133,7 +132,7 @@ namespace MiniXNAft.Entities {
 
         }
 
-        public void Update(GameTime gameTime) {
+         public void Update(GameTime gameTime) {
 
             double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -174,6 +173,27 @@ namespace MiniXNAft.Entities {
                     move(xa, ya);
                 }
 
+
+                if (stamina <= 0 && staminaRechargeDelay == 0 && staminaRecharge == 0) {
+                    staminaRechargeDelay = 40;
+                }
+
+                if (staminaRechargeDelay > 0) {
+                    staminaRechargeDelay--;
+                }
+
+                if (staminaRechargeDelay == 0) {
+                    staminaRecharge++;
+                    if (isSwimming()) {
+                        staminaRecharge = 0;
+                    }
+                    while (staminaRecharge > 10) {
+                        staminaRecharge -= 10;
+                        if (stamina < maxStamina)
+                            stamina++;
+                    }
+                }
+
                 /*
                 if (_X < 0) {
                     _X = 0F;
@@ -196,7 +216,7 @@ namespace MiniXNAft.Entities {
             }
         }
 
-        new public void Draw(Drawer drawer) {
+        override public void Draw(Drawer drawer) {
             int spriteOffset = 0;
             switch (orientation) {
                 case Movement.Left:
@@ -313,10 +333,15 @@ namespace MiniXNAft.Entities {
 
         }
 
-        public bool payStamina(int cost) {
+         public bool payStamina(int cost) {
             if (cost > stamina)
                 return false;
             stamina -= cost;
+            return true;
+        }
+
+
+        override public bool canSwim() {
             return true;
         }
     }

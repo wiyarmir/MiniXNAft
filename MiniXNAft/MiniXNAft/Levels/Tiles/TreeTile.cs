@@ -8,7 +8,8 @@ using MiniXNAft.Items;
 
 namespace MiniXNAft.Levels.Tiles {
     class TreeTile : GrassTile {
-        public TreeTile(int p) : base(p) {
+        public TreeTile(int p)
+            : base(p) {
         }
 
         public override void Draw(Graphics.Drawer drawer, Level level, int x, int y) {
@@ -52,12 +53,12 @@ namespace MiniXNAft.Levels.Tiles {
             return false;
         }
 
-        new public void hurt(Level level, int x, int y, Mob source, int dmg,
+        override public void hurt(Level level, int x, int y, Mob source, int dmg,
                 int attackDir) {
             hurt(level, x, y, dmg);
         }
 
-        new public bool interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
+        override public bool interact(Level level, int xt, int yt, Player player, Item item, int attackDir) {
             /*
                 if (item is ToolItem) {
                 ToolItem tool = (ToolItem) item;
@@ -73,7 +74,8 @@ namespace MiniXNAft.Levels.Tiles {
             return false;
         }
 
-        private void hurt(Level level, int x, int y, int dmg) {
+         private void hurt(Level level, int x, int y, int dmg) {
         }
+
     }
 }

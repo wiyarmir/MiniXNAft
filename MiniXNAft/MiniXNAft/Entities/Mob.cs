@@ -26,7 +26,7 @@ namespace MiniXNAft.Entities {
             yr = 3;
         }
 
-        new public void Update() {
+        override public void Update() {
             tickTime++;
 
             //FIXME
@@ -41,11 +41,11 @@ namespace MiniXNAft.Entities {
                 hurtTime--;
         }
 
-        protected void die() {
+        virtual protected void die() {
             remove();
         }
 
-        new public bool move(int xa, int ya) {
+        override public bool move(int xa, int ya) {
             if (isSwimming()) {
                 if (swimTimer++ % 2 == 0)
                     return true;
@@ -91,16 +91,16 @@ namespace MiniXNAft.Entities {
             }
         }
 
-        new public bool blocks(Entity e) {
+        override public bool blocks(Entity e) {
             return e.isBlockableBy(this);
         }
 
-        new public void hurt(Tile tile, int x, int y, int damage) {
+        override public void hurt(Tile tile, int x, int y, int damage) {
             int attackDir = dir ^ 1;
             doHurt(damage, attackDir);
         }
 
-        new public void hurt(Mob mob, int damage, int attackDir) {
+        override public void hurt(Mob mob, int damage, int attackDir) {
             doHurt(damage, attackDir);
         }
 

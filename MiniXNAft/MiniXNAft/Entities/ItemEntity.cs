@@ -4,6 +4,6 @@ using System.Linq;
 using System.Text;
 
 namespace MiniXNAft.Entities {
-    public class ItemEntity {
+    public class ItemEntity : Entity{
     }
 }

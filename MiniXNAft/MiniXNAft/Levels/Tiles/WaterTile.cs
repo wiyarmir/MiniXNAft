@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using MiniXNAft.Graphics;
+using MiniXNAft.Entities;
 
 namespace MiniXNAft.Levels.Tiles {
     class WaterTile : Tile {
@@ -25,6 +26,9 @@ namespace MiniXNAft.Levels.Tiles {
             drawer.Draw(x * 16 + 8, y * 16 + 0, 37, col);
             drawer.Draw(x * 16 + 0, y * 16 + 8, 37, col);
             drawer.Draw(x * 16 + 8, y * 16 + 8, wRandom.Next(3), col);
+        }
+        override public bool mayPass(Level level, int x, int y, Entity e) {
+            return e.canSwim();
         }
     }
 }
