@@ -22,5 +22,9 @@ namespace MiniXNAft {
         private void Button_Click(object sender, RoutedEventArgs e) {
             NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));
         }
+        // Simple button Click event handler to take us to the second page
+        private void Settings_Click(object sender, RoutedEventArgs e) {
+            NavigationService.Navigate(new Uri("/SettingsPage.xaml", UriKind.Relative));
+        }
     }
 }
